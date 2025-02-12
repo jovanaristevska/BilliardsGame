@@ -14,17 +14,15 @@ public class GameSetup : MonoBehaviour
     [SerializeField] Transform cueBallPosition;
     [SerializeField] Transform headBallPosition;
 
-    //
-    private List<GameObject> balls = new List<GameObject>();
 
-    void Start()
+    private void Awake()
     {
         ballRadius = ballPrefab.GetComponent<SphereCollider>().radius * 150f;
         ballDiametar = ballRadius * 2f;
         PlaceAllBalls();
-        ////
-        //DisableBallPhysics(); // Disable physics initially
+
     }
+
 
     void PlaceAllBalls()
     {
