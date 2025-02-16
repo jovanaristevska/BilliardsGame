@@ -17,9 +17,13 @@ public class GameManager : MonoBehaviour
     bool isWinningShotForPlayer2 = false;
     int player1BallsRemaining = 7;
     int player2BallsRemaining = 7;
+     
     bool isWaitingForBallMovementToStop = false;
     bool willSwapPlayers = false; 
     bool isGameOver = false;
+    bool ballPocketed = false;
+
+
     [SerializeField] float shotTimer = 3f;
     private float currentTimer;
 
@@ -42,12 +46,13 @@ public class GameManager : MonoBehaviour
     {
         currentPlayer = CurrentPlayer.Player1;
         currentCamera = cueStickCamera;
+        currentTimer = shotTimer;
     }
 
     void Update()
     {
         if (isWaitingForBallMovementToStop && !isGameOver)
-        {   
+        {
             currentTimer -= Time.deltaTime;
             if (currentTimer > 0)
             {
@@ -58,9 +63,9 @@ public class GameManager : MonoBehaviour
             bool allStopped = true;
             foreach (GameObject ball in GameObject.FindGameObjectsWithTag("Ball"))
             {
-                if(ball.GetComponent<Rigidbody>().linearVelocity.magnitude <= movementThreshold)
+                if (ball.GetComponent<Rigidbody>().linearVelocity.magnitude >= movementThreshold)
                 {
-                    //Debug.Log(ball.GetComponent<Rigidbody>().linearVelocity.magnitude);
+                    Debug.Log(ball.GetComponent<Rigidbody>().linearVelocity.magnitude);
                     allStopped = false;
                     break;
                 }
@@ -68,7 +73,7 @@ public class GameManager : MonoBehaviour
             if (allStopped)
             {
                 isWaitingForBallMovementToStop = false;
-                if (willSwapPlayers)
+                if (willSwapPlayers || !ballPocketed)
                 {
                     NextPlayerTurn();
                 }
@@ -77,18 +82,19 @@ public class GameManager : MonoBehaviour
                     SwitchCameras();
                 }
                 currentTimer = shotTimer;
+                ballPocketed = false;
             }
         }
     }
 
     public void SwitchCameras()
     {
-        if(currentCamera == cueStickCamera)
+        if (currentCamera == cueStickCamera)
         {
             cueStickCamera.enabled = false;
             overHeadCamera.enabled = true;
             currentCamera = overHeadCamera;
-            isWaitingForBallMovementToStop=true;
+            isWaitingForBallMovementToStop = true;
         }
         else
         {
@@ -122,6 +128,8 @@ public class GameManager : MonoBehaviour
                 return true;
             }
         }
+        willSwapPlayers = true;
+        //NextPlayerTurn();
         return false;
     }
 
@@ -147,6 +155,7 @@ public class GameManager : MonoBehaviour
 
     bool CheckBall(Ball ball)
     {
+
         if (ball.IsCueBall())
         {
             if (Scratch())
@@ -180,6 +189,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+           
+
             if (ball.IsBallRed())
             {
                 player1BallsRemaining--;
@@ -191,6 +202,8 @@ public class GameManager : MonoBehaviour
                 if (currentPlayer != CurrentPlayer.Player1)
                 {
                     willSwapPlayers = true;
+                    //NextPlayerTurn();
+                    //isWaitingForBallMovementToStop = true;
                 }
             }
             else
@@ -204,6 +217,8 @@ public class GameManager : MonoBehaviour
                 if (currentPlayer != CurrentPlayer.Player2)
                 {
                     willSwapPlayers = true;
+                    //NextPlayerTurn();
+                    //isWaitingForBallMovementToStop = true;
                 }
             }
         }
@@ -238,24 +253,26 @@ public class GameManager : MonoBehaviour
             currentPlayer = CurrentPlayer.Player1;
             currentTurnText.text = "Current Turn: Player 1";
         }
-        willSwapPlayers = false;
+        willSwapPlayers = false;  
         SwitchCameras();
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Ball")
         {
-            if (CheckBall(other.gameObject.GetComponent<Ball>()))
-            {
+             ballPocketed = true;
+             if (CheckBall(other.gameObject.GetComponent<Ball>()))
+             {
                 Destroy(other.gameObject);
-            }
-            else
-            {
+             }
+             else
+             {
                 other.gameObject.transform.position = headPosition.position;
                 other.gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 other.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-            }
+             }
         }
     }
 }

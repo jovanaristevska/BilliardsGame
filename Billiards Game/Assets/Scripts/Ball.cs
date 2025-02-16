@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
         if (rb.linearVelocity.y > 0)
         {
             Vector3 newVelocity = rb.linearVelocity;
-            newVelocity.y = 0f; 
+            newVelocity.y = 0f;
             rb.linearVelocity = newVelocity;
         }
     }
