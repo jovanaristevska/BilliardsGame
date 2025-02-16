@@ -58,8 +58,7 @@ public class GameManager : MonoBehaviour
             {
                 return;
             }
-            //Logic here to check if balls are moving.
-            //When all balls have stopped moving, it can move to the next player's turn
+           
             bool allStopped = true;
             foreach (GameObject ball in GameObject.FindGameObjectsWithTag("Ball"))
             {
@@ -129,7 +128,6 @@ public class GameManager : MonoBehaviour
             }
         }
         willSwapPlayers = true;
-        //NextPlayerTurn();
         return false;
     }
 
@@ -137,18 +135,18 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == CurrentPlayer.Player1)
         {
-            Lose("Player 1 hit in the 8 ball and Has Lost");
+            Lose("Player 1 Lost!");
         }
         else
         {
-            Lose("Player 2 hit in the 8 ball and Has Lost!");
+            Lose("Player 2 Lost!");
         }
 
     }
 
     void ScratchOnWinningShot(string player)
     {
-        Lose(player + " Scratch on Their Final Shot and Has Lost!");
+        Lose(player + " Lost!");
     }
 
  
@@ -202,8 +200,6 @@ public class GameManager : MonoBehaviour
                 if (currentPlayer != CurrentPlayer.Player1)
                 {
                     willSwapPlayers = true;
-                    //NextPlayerTurn();
-                    //isWaitingForBallMovementToStop = true;
                 }
             }
             else
@@ -217,8 +213,6 @@ public class GameManager : MonoBehaviour
                 if (currentPlayer != CurrentPlayer.Player2)
                 {
                     willSwapPlayers = true;
-                    //NextPlayerTurn();
-                    //isWaitingForBallMovementToStop = true;
                 }
             }
         }
@@ -237,7 +231,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         messageText.gameObject.SetActive(true);
-        messageText.text = player + " Has Won!";
+        messageText.text = player + " Won!";
         restartButton.SetActive(true);
     }
 

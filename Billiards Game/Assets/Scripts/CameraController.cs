@@ -4,27 +4,23 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] float rotationSpeed;
-    [SerializeField] Vector3 offset; //the distance from the cueball, that we want the camera to be
-    [SerializeField] float downAngle; //za clicking issues
-    [SerializeField] float power; //how hard we are hitting the cue ball
+    [SerializeField] Vector3 offset; 
+    [SerializeField] float downAngle; 
+    [SerializeField] float power; 
     [SerializeField] GameObject cueStick;
     private float horizontalInput;
 
 
-    //OTPOSLE
     private bool isTakingShot = false;
     [SerializeField] float maxDrawDistance;
     private float savedMousePosition; 
-
-
-
 
 
     Transform cueBall;
     GameManager gameManager;
 
     [SerializeField] TextMeshProUGUI powerText;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+  
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
@@ -40,7 +36,7 @@ public class CameraController : MonoBehaviour
         ResetCamera();
     }
 
-    // Update is called once per frame
+  
     void Update()
     {
         if (cueBall != null && !isTakingShot)
@@ -49,34 +45,21 @@ public class CameraController : MonoBehaviour
 
             transform.RotateAround(cueBall.position, Vector3.up, horizontalInput);
         }
-        //Shoot();
-
-        //Temp
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetCamera();
         }
-        //End
+        
         Shoot(); 
-
-        //OVA DA SE IZBRISHI TREBA
-        //if (Input.GetButtonDown("Fire1") && gameObject.GetComponent<Camera>().enabled)
-        //{
-        //    Vector3 hitDirection = transform.forward;
-        //    hitDirection = new Vector3(hitDirection.x, 0, hitDirection.z).normalized;
-
-        //    cueBall.gameObject.GetComponent<Rigidbody>().AddForce(hitDirection * power, ForceMode.Impulse);
-        //    cueStick.SetActive(false);
-        //    gameManager.SwitchCameras();
-        //}
     }
 
 
     public void ResetCamera()
     {
         cueStick.SetActive(true);
-        transform.position = cueBall.position + offset; //reset the camera's position back to the cueball's position and add offset
-        transform.LookAt(cueBall.position); //is going to look athe the cue ball
+        transform.position = cueBall.position + offset; 
+        transform.LookAt(cueBall.position); 
         transform.localEulerAngles = new Vector3(downAngle, transform.localEulerAngles.y, 0);
     }
 
@@ -113,7 +96,7 @@ public class CameraController : MonoBehaviour
                     isTakingShot = false;
 
                  
-                    powerText.text = "Power: 0%"; // Update UI accordingly
+                    powerText.text = "Power: 0%";
                 }
             }
         }

@@ -68,12 +68,12 @@ public class GameSetup : MonoBehaviour
         {
             for (int j = 0; j < NumInThisRow; j++)
             {
-                //Check to see if it's the middle spot where the 8 ball goes
+               
                 if (i == 2 && j == 1)
                 {
                     PlaceEightBall(currentPosition);
                 }
-                //If there are red and yellow balls remaining, randomly choose one and place it
+                
                 else if (redBallsRemaining > 0 && yellowBallsRemaining > 0)
                 {
                     rand = Random.Range(0, 2);
@@ -86,12 +86,12 @@ public class GameSetup : MonoBehaviour
                         PlaceYellowBall(currentPosition);
                     }
                 }
-                //If only red balls remaining are left, place one
+               
                 else if (redBallsRemaining > 0)
                 {
                     PlaceRedBall(currentPosition);
                 }
-                //Otherwise, place a yellow ball
+                
                 else
                 {
                     PlaceYellowBall(currentPosition);
@@ -101,7 +101,7 @@ public class GameSetup : MonoBehaviour
 
             }
 
-            // Once all the balls in the row have been placed, move to the next row  
+           
             firstInRowPosition += Vector3.back * (Mathf.Sqrt(3) * ballRadius) + Vector3.left * ballRadius;
             currentPosition = firstInRowPosition;
             NumInThisRow++;
